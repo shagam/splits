@@ -86,21 +86,29 @@ public class SplitsUrl {
         // int count1 = 0;
         while(matcher.find()) {
             // count1++;
-            // System.out.println("found: " + count + " : "
-            //         // + matcher.start() + " - " + matcher.end() + " " + buff.substring(matcher.start(), matcher.end())
-            //          + " " + matcher.group(1) + " " + matcher.group(2) + " " + matcher.group(3) + " " + matcher.group(4)+ " " + matcher.group(5));
+            System.out.println("found: " + count + " : " +  " sym: " + sym
+                    // + matcher.start() + " - " + matcher.end() + " " + buff.substring(matcher.start(), matcher.end())
+                     + " " + matcher.group(1) + " " + matcher.group(2) + " " + matcher.group(3) + " " + matcher.group(4)+ " " + matcher.group(5));
             //{"key": "NVDA_2021", "symbol": "NVDA", "jump": 4, "year": 2010, "month": 7, "day": 20 },
             int year = Integer.parseInt(matcher.group(3));
             if (year >= 2000) {
+              try {
               int mon = Integer.parseInt(matcher.group(1));
               int day = Integer.parseInt(matcher.group(2));
-      
+   
+                Double cnt4 = Double.parseDouble(matcher.group(4));
+                Double cnt5 = Double.parseDouble(matcher.group(5));
+
+              Double jump = cnt4 / cnt5;
+              jump = Math.round (jump * 100) / 100.0; 
               if (stockCount > 0)
                 splitStr += ",\n";  
               splitStr += "{\"key\": \"" + sym + "_" + matcher.group(3) + "\", " + "\"symbol\": \"" + sym + "\", ";
+              splitStr += "\"jump\": " + jump + ", "; 
               splitStr += "\"year\": " + year + ", ";
               splitStr += "\"month\": " + mon + ", ";
               splitStr += "\"day\": " + day + "}";
+            } catch (NumberFormatException e) {e.printStackTrace();};
             }
         }
         // if (splitStr!= "")
