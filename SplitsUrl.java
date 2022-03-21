@@ -40,6 +40,16 @@ public class SplitsUrl {
   //   }
   // }
 
+    static String buildSplitStr (String sym, Double jump, int year, int mon, int day) {
+      var splitStr = "";
+      splitStr += "{\"key\": \"" + sym + "_" + year + "\", " + "\"symbol\": \"" + sym + "\", ";
+      splitStr += "\"jump\": " + jump + ", "; 
+      splitStr += "\"year\": " + year + ", ";
+      splitStr += "\"month\": " + mon + ", ";
+      splitStr += "\"day\": " + day + "}";
+      return splitStr;
+    }
+
 
   static String getSplitsFromUrl (String sym, int stockCount) { 
 
@@ -96,18 +106,15 @@ public class SplitsUrl {
               int mon = Integer.parseInt(matcher.group(1));
               int day = Integer.parseInt(matcher.group(2));
    
-                Double cnt4 = Double.parseDouble(matcher.group(4));
-                Double cnt5 = Double.parseDouble(matcher.group(5));
+                Double cnt4 = Double.parseDouble(matcher.group(4)); // jump factor
+                Double cnt5 = Double.parseDouble(matcher.group(5)); // jump factor
 
               Double jump = cnt4 / cnt5;
               jump = Math.round (jump * 100) / 100.0; 
               if (stockCount > 0)
-                splitStr += ",\n";  
-              splitStr += "{\"key\": \"" + sym + "_" + matcher.group(3) + "\", " + "\"symbol\": \"" + sym + "\", ";
-              splitStr += "\"jump\": " + jump + ", "; 
-              splitStr += "\"year\": " + year + ", ";
-              splitStr += "\"month\": " + mon + ", ";
-              splitStr += "\"day\": " + day + "}";
+                splitStr += ",\n";
+                
+              splitStr += buildSplitStr (sym, jump, year, mon, day);  
             } catch (NumberFormatException e) {e.printStackTrace();};
             }
         }
