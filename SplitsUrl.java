@@ -40,7 +40,7 @@ public class SplitsUrl {
   //   }
   // }
 
-    // separte code to build also non split records
+    // separte code to build also for non split records
     static String buildSplitStr (String sym, Double jump, int year, int mon, int day) {
       String splitStr = "";
       String yearStr = ""+ year;
@@ -150,21 +150,23 @@ public class SplitsUrl {
     public static void main(String[] args) {
 
       try {
-        FileOutputStream fs= new FileOutputStream("C://Users/eli/OneDrive/Documents/React/splits.txt");
+        // create output file
+        FileOutputStream fs= new FileOutputStream("C://code/splits.txt");
         BufferedWriter splitsWrite = new BufferedWriter(new OutputStreamWriter(fs));
         splitsWrite.write ("[\n");
         
-        FileReader reader = new FileReader ("C://Users/eli/OneDrive/Documents/React/stock_list.txt");
+        // read input
+        FileReader reader = new FileReader ("C://code/stock_list.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
-        String line;
+        String stockSymbol;
         int stockCount = 0;
         
-        while ((line = bufferedReader.readLine()) != null) {
+        while ((stockSymbol = bufferedReader.readLine()) != null) {
           // System.out.println(line);
-          if (line.indexOf('(') == -1) {
+          if (stockSymbol.indexOf('(') == -1) {
             
         // String splits = getSplitsFromUrl ("AMZN");
-            String splits = getSplitsFromUrl (line, stockCount);
+            String splits = getSplitsFromUrl (stockSymbol, stockCount);
             if (splits != "") {
               System.out.println (splits);
               if (stockCount > 0)
