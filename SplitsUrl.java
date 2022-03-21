@@ -132,7 +132,7 @@ public class SplitsUrl {
         if (matchCount == 0) {
           if (stockCount > 0)
             splitStr += ",\n";
-          splitStr += buildSplitStr (sym, (double)0, 0, 0, 0); // a flag for no splits
+          splitStr += buildSplitStr (sym, (double)0, 0, 0, 0); // year 0 splits will be ignored by stock-chart
         }
       // }
         // if (splitStr!= "")
@@ -150,11 +150,11 @@ public class SplitsUrl {
     public static void main(String[] args) {
 
       try {
-        FileOutputStream fs= new FileOutputStream("C://Users/eli/OneDrive/Documents/React/splits.txt");
+        FileOutputStream fs= new FileOutputStream("C://code/splits.txt");
         BufferedWriter splitsWrite = new BufferedWriter(new OutputStreamWriter(fs));
         splitsWrite.write ("[\n");
         
-        FileReader reader = new FileReader ("C://Users/eli/OneDrive/Documents/React/stock_list.txt");
+        FileReader reader = new FileReader ("C://code/splits/stock_list.txt");
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
         int stockCount = 0;
