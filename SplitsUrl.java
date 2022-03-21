@@ -40,9 +40,14 @@ public class SplitsUrl {
   //   }
   // }
 
+    // separte code to build also non split records
     static String buildSplitStr (String sym, Double jump, int year, int mon, int day) {
-      var splitStr = "";
-      splitStr += "{\"key\": \"" + sym + "_" + year + "\", " + "\"symbol\": \"" + sym + "\", ";
+      String splitStr = "";
+      String yearStr = ""+ year;
+      if (year == 0)
+        yearStr = "0000"; // easier for human read
+      splitStr += "{\"key\": \"" + sym + "_" + yearStr + "\", ";
+      splitStr +=  "\"symbol\": \"" + sym + "\", ";
       splitStr += "\"jump\": " + jump + ", "; 
       splitStr += "\"year\": " + year + ", ";
       splitStr += "\"month\": " + mon + ", ";
@@ -91,12 +96,13 @@ public class SplitsUrl {
         Pattern pattern = Pattern.compile("#CCCCCC\">(\\d\\d)/(\\d\\d)/(\\d\\d\\d\\d)</TD><TD align=\"center\" style=\"padding: 4px; border-bottom: 1px solid #CCCCCC\">(\\d) for (\\d)");
 
         Matcher matcher = pattern.matcher(buff);
-        boolean matches = matcher.matches();
+        // boolean matches = matcher.matches();
         String splitStr = "";
-        // int count1 = 0;
+        int matchCount = 0;
+    
+        // if (matches > 0) {
         while(matcher.find()) {
-            // count1++;
-            System.out.println("found: " + count + " : " +  " sym: " + sym
+            System.out.println("lines: " + count + " : " +  " sym: " + sym
                     // + matcher.start() + " - " + matcher.end() + " " + buff.substring(matcher.start(), matcher.end())
                      + " " + matcher.group(1) + " " + matcher.group(2) + " " + matcher.group(3) + " " + matcher.group(4)+ " " + matcher.group(5));
             //{"key": "NVDA_2021", "symbol": "NVDA", "jump": 4, "year": 2010, "month": 7, "day": 20 },
@@ -110,14 +116,25 @@ public class SplitsUrl {
                 Double cnt5 = Double.parseDouble(matcher.group(5)); // jump factor
 
               Double jump = cnt4 / cnt5;
-              jump = Math.round (jump * 100) / 100.0; 
-              if (stockCount > 0)
-                splitStr += ",\n";
-                
-              splitStr += buildSplitStr (sym, jump, year, mon, day);  
+              jump = Math.round (jump * 100) / 100.0;
+              
+              if (jump != 1) {  // omit jump == 1, which is not a real split
+                if (stockCount > 0)
+                  splitStr += ",\n";
+                  
+                splitStr += buildSplitStr (sym, jump, year, mon, day); 
+                matchCount++; 
+              }
             } catch (NumberFormatException e) {e.printStackTrace();};
             }
         }
+
+        if (matchCount == 0) {
+          if (stockCount > 0)
+            splitStr += ",\n";
+          splitStr += buildSplitStr (sym, (double)0, 0, 0, 0); // a flag for no splits
+        }
+      // }
         // if (splitStr!= "")
         //   splitStr +=  "\n";
         return splitStr;
@@ -143,7 +160,7 @@ public class SplitsUrl {
         int stockCount = 0;
         
         while ((line = bufferedReader.readLine()) != null) {
-          System.out.println(line);
+          // System.out.println(line);
           if (line.indexOf('(') == -1) {
             
         // String splits = getSplitsFromUrl ("AMZN");
