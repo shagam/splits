@@ -93,7 +93,9 @@ public class SplitsUrl {
         //#CCCCCC">06/02/1998</TD><TD align="center" style="padding: 4px; border-bottom: 1px solid #CCCCCC">2 for 1
         //</TD></TR><TR><TD align=
 
-        Pattern pattern = Pattern.compile("#CCCCCC\">(\\d\\d)/(\\d\\d)/(\\d\\d\\d\\d)</TD><TD align=\"center\" style=\"padding: 4px; border-bottom: 1px solid #CCCCCC\">(\\d) for (\\d)");
+        //#CCCCCC">01/21/2010</TD><TD align="center" style="padding: 4px; border-bottom: 1px solid #CCCCCC">50 for 1
+
+        Pattern pattern = Pattern.compile("#CCCCCC\">(\\d\\d)/(\\d\\d)/(\\d\\d\\d\\d)</TD><TD align=\"center\" style=\"padding: 4px; border-bottom: 1px solid #CCCCCC\">(\\d*) for (\\d*)");
 
         Matcher matcher = pattern.matcher(buff);
         // boolean matches = matcher.matches();
@@ -165,7 +167,7 @@ public class SplitsUrl {
           // System.out.println(line);
           if (stockSymbol.indexOf('(') == -1) {
             
-        // String splits = getSplitsFromUrl ("AMZN");
+            // String splits_ = getSplitsFromUrl ("BRK.B",1);
             String splits = getSplitsFromUrl (stockSymbol, stockCount);
             if (splits != "") {
               System.out.println (splits);
