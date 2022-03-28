@@ -118,7 +118,7 @@ public class SplitsUrl {
                 Double cnt5 = Double.parseDouble(matcher.group(5)); // jump factor
 
               Double jump = cnt4 / cnt5;
-              jump = Math.round (jump * 100) / 100.0;
+              jump = Math.round (jump * 1000) / 1000.0;
               
               if (jump != 1) {  // omit jump == 1, which is not a real split
                 if (stockCount > 0)
