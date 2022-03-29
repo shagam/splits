@@ -166,7 +166,7 @@ public class SplitsUrl {
         while ((stockSymbol = bufferedReader.readLine()) != null) {
           // System.out.println(line);
           if (stockSymbol.indexOf('(') == -1) {
-            
+            stockSymbol = stockSymbol.trim();
             // String splits_ = getSplitsFromUrl ("BRK.B",1);
             String splits = getSplitsFromUrl (stockSymbol, stockCount);
             if (splits != "") {
