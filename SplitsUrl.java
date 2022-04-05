@@ -164,6 +164,8 @@ public class SplitsUrl {
         int stockCount = 0;
         
         while ((stockSymbol = bufferedReader.readLine()) != null) {
+          if (stockSymbol.trim().length() == 0)
+            continue;
           // System.out.println(line);
           if (stockSymbol.indexOf('(') == -1) {
             stockSymbol = stockSymbol.trim();
